@@ -1,7 +1,14 @@
 library swm_flutter_package;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class FPKit {
+  static Supabase? _supabase;
+
+  static Future initialize({required String url, required String anonKey}) async {
+    _supabase = await Supabase.initialize(
+      url: url,
+      anonKey: anonKey,
+    );
+  }
 }
