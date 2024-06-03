@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_package_sample/views/home/home_view.dart';
-import 'package:flutter_package_sample/views/home/home_view_model.dart';
+import 'package:flutter_package_sample/views/root/root_view.dart';
+import 'package:flutter_package_sample/views/root/root_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:swm_flutter_package/swm_flutter_package.dart';
 
@@ -20,14 +20,14 @@ class PackageSampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Supabase Flutter Package Sample',
       theme: ThemeData(
       ),
       home: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (BuildContext content) => HomeViewModel())
+          ChangeNotifierProvider(create: (BuildContext content) => RootViewModel())
         ],
-        child: HomeView(),
+        child: RootView(),
       ),
     );
   }
