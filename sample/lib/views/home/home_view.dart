@@ -10,9 +10,29 @@ class HomeView extends StatelessWidget {
     var viewModel = Provider.of<HomeViewModel>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(viewModel.title),),
-      body: Center(
-        child: Text(viewModel.body),
+      appBar: AppBar(
+        title: Text('홈 화면'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              '로그인한 유저 ID: ${viewModel.userID()}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                viewModel.signOut();
+              },
+              child: Text('로그아웃'),
+            ),
+          ],
+        ),
       ),
     );
   }
