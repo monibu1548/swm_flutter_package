@@ -1,16 +1,16 @@
 import 'package:swm_flutter_package/entities/user.dart';
-import 'package:swm_flutter_package/services/auth_service.dart';
+import '../../services/user_service.dart';
 
 class HomeModel {
-  final FPAuthService authService;
+  final UserService userService;
 
-  HomeModel(this.authService);
+  HomeModel(this.userService);
 
   Future<void> signOut() async {
-    return await authService.signOut();
+    return await userService.signOut();
   }
 
   FPUser? user() {
-    return authService.getCurrentUser();
+    return userService.getCurrentUser();
   }
 }
