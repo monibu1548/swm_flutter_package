@@ -1,16 +1,16 @@
+import 'package:flutter_package_sample/services/user_service.dart';
 import 'package:swm_flutter_package/entities/user.dart';
-import 'package:swm_flutter_package/services/auth_service.dart';
 
 class RootModel {
-  final FPAuthService authService;
+  final UserService userService;
 
-  RootModel(this.authService);
+  RootModel(this.userService);
 
   Stream<FPUser?> getUserStream() {
-    return authService.getUserStream();
+    return userService.getUserStream();
   }
 
   bool isSignedIn() {
-    return authService.isSignedIn();
+    return userService.isSignedIn();
   }
 }
