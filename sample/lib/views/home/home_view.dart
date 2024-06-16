@@ -66,7 +66,7 @@ class HomeView extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // '삭제' 버튼을 눌렀을 때 API의 DELETE 엔드포인트를 호출
-                    apiClient.post<EmptyResult>('/users/v1/fcmToken', {'fcmToken': textController.text}, (json) => EmptyResult.fromJson(json))
+                    apiClient.delete<EmptyResult>('/users/v1/fcmToken', {'fcmToken': textController.text}, (json) => EmptyResult.fromJson(json))
                         .then((value) => print(value)) // 응답을 출력
                         .catchError((error) => print(error)); // 에러를 출력
                   },
