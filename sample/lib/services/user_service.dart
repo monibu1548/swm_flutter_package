@@ -13,6 +13,19 @@ class UserService {
     return authService.getCurrentUser();
   }
 
+  Stream<FPUser?> getUserStream() {
+    return authService.getUserStream();
+  }
+
+  bool isSignedIn() {
+    return authService.isSignedIn();
+  }
+
+  Future<void> signOut() async {
+    await deleteFCMToken(fcmToken: "TODO: FCM 토큰을 가져오는 코드를 작성하세요.");
+    return authService.signOut();
+  }
+
   // FCM 토큰을 삽입 또는 업데이트하는 메서드
   Future<void> upsertFCMToken({required String fcmToken}) async {
     return apiClient.post<EmptyResult>('/v1/fcmToken', {'fcmToken': fcmToken}, (json) => EmptyResult.fromJson(json))
@@ -25,10 +38,5 @@ class UserService {
     return apiClient.delete<EmptyResult>('/v1/fcmToken', {'fcmToken': fcmToken}, (json) => EmptyResult.fromJson(json))
         .then((value) => print(value)) // 성공 응답을 출력
         .catchError((error) => print(error)); // 에러를 출력
-  }
-
-  Future<void> signOut() async {
-    await deleteFCMToken(fcmToken: "TODO: FCM 토큰을 가져오는 코드를 작성하세요.");
-    return authService.signOut();
   }
 }
