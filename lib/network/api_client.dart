@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:swm_flutter_package/network/response_format.dart';
 import 'package:swm_flutter_package/services/auth_service.dart';
 
 class ApiClient {
@@ -21,46 +22,47 @@ class ApiClient {
 
   // GET 요청을 처리하는 메서드입니다.
   // 지정된 endpoint로 GET 요청을 보내고 응답을 처리합니다.
-  Future<String> get(String endpoint) async {
+  Future<ResponseFormat<T>> get<T>(String endpoint, T Function(Map<String, dynamic>) fromJsonT) async {
     final headers = _getHeaders();
     final response = await http.get(
       Uri.parse('$baseUrl$endpoint'),
       headers: headers,
     );
-    return _handleResponse(response);
+    return _handleResponse<T>(response, fromJsonT);
   }
 
   // POST 요청을 처리하는 메서드입니다.
   // 지정된 endpoint로 POST 요청을 보내고 응답을 처리합니다.
-  Future<String> post(String endpoint, Object? body) async {
+  Future<ResponseFormat<T>> post<T>(String endpoint, Object? body, T Function(Map<String, dynamic>) fromJsonT) async {
     final headers = _getHeaders();
     final response = await http.post(
       Uri.parse('$baseUrl$endpoint'),
       headers: headers,
       body: jsonEncode(body),
     );
-    return _handleResponse(response);
+    return _handleResponse<T>(response, fromJsonT);
   }
 
   // DELETE 요청을 처리하는 메서드입니다.
   // 지정된 endpoint로 DELETE 요청을 보내고 응답을 처리합니다.
-  Future<String> delete(String endpoint, Object? body) async {
+  Future<ResponseFormat<T>> delete<T>(String endpoint, Object? body, T Function(Map<String, dynamic>) fromJsonT) async {
     final headers = _getHeaders();
     final response = await http.delete(
       Uri.parse('$baseUrl$endpoint'),
       headers: headers,
       body: jsonEncode(body),
     );
-    return _handleResponse(response);
+    return _handleResponse<T>(response, fromJsonT);
   }
 
   // HTTP 응답을 처리하는 메서드입니다.
   // 상태 코드가 200-299일 경우 응답 본문을 반환하고, 그렇지 않으면 예외를 발생시킵니다.
-  String _handleResponse(http.Response response) {
+  ResponseFormat<T> _handleResponse<T>(http.Response response, T Function(Map<String, dynamic>) fromJsonT) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return response.body;
+      final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+      return ResponseFormat<T>.fromJson(jsonResponse, fromJsonT);
     } else {
-      throw Exception('Failed to load data: ${response.statusCode}');
+      return ResponseFormat(code: -999, message: "Parsing Error", result: null);
     }
   }
 }
