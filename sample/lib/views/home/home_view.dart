@@ -35,6 +35,13 @@ class HomeView extends StatelessWidget {
               },
               child: Text('로그아웃'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                // 로그아웃 버튼을 눌렀을 때의 동작
+                await viewModel.requestPermission();
+              },
+              child: Text(viewModel.pushNotificationStatusText),
+            ),
           ],
         ),
       ),

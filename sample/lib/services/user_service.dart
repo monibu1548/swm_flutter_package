@@ -2,11 +2,13 @@ import 'package:swm_flutter_package/entities/user.dart';
 import 'package:swm_flutter_package/network/api_client.dart';
 import 'package:swm_flutter_package/network/response_format.dart';
 import 'package:swm_flutter_package/services/auth_service.dart';
+import 'package:swm_flutter_package/services/push_notification_service.dart';
 
 class UserService {
   // API 클라이언트 인스턴스를 생성하여 사용자 API 엔드포인트 설정
   ApiClient apiClient = ApiClient('https://dthvcgffzopawocgahnr.supabase.co/functions/v1/api/users');
   FPAuthService authService = FPAuthService();
+  FPPushNotificationService pushNotificationService = FPPushNotificationService();
 
   // 현재 로그인한 사용자 정보를 가져오는 메서드
   FPUser? getCurrentUser() {
@@ -22,7 +24,8 @@ class UserService {
   }
 
   Future<void> signOut() async {
-    await deleteFCMToken(fcmToken: "TODO: FCM 토큰을 가져오는 코드를 작성하세요.");
+    var token = await pushNotificationService.getToken();
+    if (token != null) await deleteFCMToken(fcmToken: token);
     return authService.signOut();
   }
 
